@@ -31,8 +31,8 @@ function joinBaseAndPath(base, urlPath, flatten) {
       protocol = bits[0], rest = bits[1];
       
   if(flatten){
-    rest = rest.substr(rest.lastIndexOf('/') + 1);
-  }    
+    urlPath = urlPath.substr(urlPath.lastIndexOf('/') + 1);
+  }
   
   // Trim any path off if this is a domain-relative URL
   if (urlPath[0] === '/')
