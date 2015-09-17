@@ -23,12 +23,17 @@ function isLocalPath(filePath, mustBeRelative) {
   );
 }
 
-function joinBaseAndPath(base, urlPath) {
+function joinBaseAndPath(base, urlPath, flatten) {
   if (base.indexOf('//') === -1) return base + urlPath;
 
   // Split out protocol first, to avoid '//' getting normalized to '/'
   var bits = base.split('//'),
       protocol = bits[0], rest = bits[1];
+      
+  if(flatten){
+    rest = rest.substr(rest.lastIndexOf('/') + 1);
+  }    
+  
   // Trim any path off if this is a domain-relative URL
   if (urlPath[0] === '/')
     rest = rest.split('/')[0];
@@ -39,7 +44,8 @@ function joinBaseAndPath(base, urlPath) {
 // Default options
 var defaults = {
   html: true,
-  css: true
+  css: true,
+  flaten: false
 };
 
 var htmlDefaults = {
@@ -73,7 +79,7 @@ module.exports = function (grunt) {
     if (typeof options.base === 'string') {
       rewriteURL = function (url) {
         if (isLocalPath(url))
-          return joinBaseAndPath(options.base, url);
+          return joinBaseAndPath(options.base, url, options.flatten);
         return url;
       };
     }
