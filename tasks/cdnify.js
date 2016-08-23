@@ -29,11 +29,11 @@ function joinBaseAndPath(base, urlPath, flatten) {
   // Split out protocol first, to avoid '//' getting normalized to '/'
   var bits = base.split('//'),
       protocol = bits[0], rest = bits[1];
-      
+
   if(flatten){
     urlPath = urlPath.substr(urlPath.lastIndexOf('/') + 1);
   }
-  
+
   // Trim any path off if this is a domain-relative URL
   if (urlPath[0] === '/')
     rest = rest.split('/')[0];
@@ -78,7 +78,7 @@ module.exports = function (grunt) {
     var rewriteURL;
     if (typeof options.base === 'string') {
       rewriteURL = function (url) {
-        if (isLocalPath(url))
+        if (options.isLocalPath? options.isLocalPath(url) : isLocalPath(url))
           return joinBaseAndPath(options.base, url, options.flatten);
         return url;
       };
